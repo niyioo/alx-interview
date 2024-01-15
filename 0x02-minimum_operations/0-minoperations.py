@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Module for minimum operations
 """
@@ -6,12 +6,14 @@ Module for minimum operations
 
 def minOperations(n):
     """
-    Calculates the fewest number of operations needed to result in exactly n H characters.
+    Calculates the fewest number of operations
+    needed to result in exactly n H characters.
     """
     if n <= 1:
         return 0
 
-    # Initialize an array to store the minimum operations for each number of characters
+    # Initialize an array to store the minimum
+    # operations for each number of characters
     min_ops = [float('inf')] * (n + 1)
 
     # Base case: 1 H character requires 0 operations
