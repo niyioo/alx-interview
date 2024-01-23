@@ -1,27 +1,40 @@
 #!/usr/bin/python3
+""" 
+Script that reads stdin line by line and computes metrics
+"""
 import sys
 
 
-def print_stats(total_size, status_codes):
-    print("File size: {}".format(total_size))
-    for code in sorted(status_codes.keys()):
-        if status_codes[code] > 0:
-            print("{}: {}".format(code, status_codes[code]))
+status_count = {'200': 0, '301': 0, '400': 0, '401': 0,
+                '403': 0, '404': 0, '405': 0, '500': 0}
+total_size = 0
+line_counter = 0
 
+try:
+    for line in sys.stdin:
+        line_list = line.split()
 
-def parse_line(line, total_size, status_codes):
-    try:
-        parts = line.split()
-        if len(parts) >= 7:
-            size = int(parts[-1])
-            code = int(parts[-2])
-            
+        if "GET" in line and "HTTP/1.1" in line:
+            status_code = line_list[-2]
+            size = int(line_list[-1])
+
+            if status_code in status_count:
+                status_count[status_code] += 1
             total_size += size
+            line_counter += 1
 
-            if code in status_codes:
-                status_codes[code] += 1
+        if line_counter == 10:
+            line_counter = 0
+            print('File size: {}'.format(total_size))
+            for key, value in sorted(status_count.items()):
+                if value != 0:
+                    print('{}: {}'.format(key, value))
 
-            return total_size, status_codes
-    except ValueError:
-        pass  # Ignore lines with invalid format or non-integer status code
-    return total_size, status_codes
+except KeyboardInterrupt:
+    pass
+
+finally:
+    print('File size: {}'.format(total_size))
+    for key, value in sorted(status_count.items()):
+        if value != 0:
+            print('{}: {}'.format(key, value))
