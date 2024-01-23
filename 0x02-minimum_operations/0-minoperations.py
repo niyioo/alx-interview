@@ -1,30 +1,42 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 """
 Module for minimum operations
 """
 
 
-def minOperations(n):
+def minOperations(target):
     """
     Calculates the fewest number of operations
     needed to result in exactly n H characters.
     """
-    if n <= 1:
+    copied_chars = 1
+    clipboard_count = 0
+    operations_count = 0
+
+    while copied_chars < target:
+        if clipboard_count == 0:
+            clipboard_count = copied_chars
+            operations_count += 1
+
+        if copied_chars == 1:
+            copied_chars += clipboard_count
+            operations_count += 1
+            continue
+
+        remaining_chars = target - copied_chars
+
+        if remaining_chars < clipboard_count:
+            return 0
+
+        if remaining_chars % copied_chars != 0:
+            copied_chars += clipboard_count
+            operations_count += 1
+        else:
+            clipboard_count = copied_chars
+            copied_chars += clipboard_count
+            operations_count += 2
+
+    if copied_chars == target:
+        return operations_count
+    else:
         return 0
-
-    # Initialize an array to store the minimum
-    # operations for each number of characters
-    min_ops = [float('inf')] * (n + 1)
-
-    # Base case: 1 H character requires 0 operations
-    min_ops[1] = 0
-
-    # Loop through each number of characters
-    for i in range(2, n + 1):
-        # Check if i is prime
-        for j in range(1, i // 2 + 1):
-            if i % j == 0:
-                # i is not prime, calculate minimum operations
-                min_ops[i] = min(min_ops[i], min_ops[j] + i // j)
-
-    return min_ops[n]
