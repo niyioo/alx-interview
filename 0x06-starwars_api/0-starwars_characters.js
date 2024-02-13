@@ -6,9 +6,9 @@ const movieId = process.argv[2];
 const apiUrl = `${endpoint}/films/${movieId}/`;
 
 request(apiUrl, async function (error, response, body) {
-  if(error) return console.log(error);
+  if (error) return console.log(error);
 
-  let characters = JSON.parse(body).characters;
+  const characters = JSON.parse(body).characters;
 
   for (const character of characters) {
     await new Promise((resolve, reject) => {
