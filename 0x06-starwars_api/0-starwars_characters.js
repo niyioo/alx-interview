@@ -8,8 +8,7 @@ const apiUrl = `${endpoint}/films/${movieId}/`;
 request(apiUrl, async function (error, response, body) {
   if(error) return console.log(error);
 
-  let movieData = JSON.parse(body);
-  let characters = movieData.characters;
+  let characters = JSON.parse(body).characters;
 
   for (const character of characters) {
     await new Promise((resolve, reject) => {
@@ -17,7 +16,7 @@ request(apiUrl, async function (error, response, body) {
         if (error) {
           reject(error);
         } else {
-          console.log(movieData.name);
+          console.log(JSON.parse(body).name);
           resolve(body);
         }
       });
