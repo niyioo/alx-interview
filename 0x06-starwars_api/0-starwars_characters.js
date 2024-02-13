@@ -2,12 +2,14 @@
 const request = require('request');
 
 const endpoint = 'https://swapi-api.hbtn.io/api';
-const filmId = process.argv[2];
+const movieId = process.argv[2];
+const apiUrl = `${endpoint}/films/${movieId}/`;
 
-request(`${endpoint}/films/${filmId}/`, async function (error, response, body) {
-  if (error) return console.log(error);
+request(apiUrl, async function (error, response, body) {
+  if(error) return console.log(error);
 
-  let characters = JSON.parse(body).characters;
+  let movieData = JSON.parse(body);
+  let characters = movieData.characters;
 
   for (const character of characters) {
     await new Promise((resolve, reject) => {
@@ -15,7 +17,7 @@ request(`${endpoint}/films/${filmId}/`, async function (error, response, body) {
         if (error) {
           reject(error);
         } else {
-          console.log(JSON.parse(body).name);
+          console.log(movieData.name);
           resolve(body);
         }
       });
