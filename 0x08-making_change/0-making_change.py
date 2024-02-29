@@ -8,16 +8,16 @@ def makeChange(coins, total):
     """
     Returns the fewest number of coins needed to meet total
     """
-    if total < 0:
-        return -1
+    if total <= 0:
+        return 0
 
-    min_coins = [float('inf')] * (total + 1)
-    min_coins[0] = 0  # Zero coins are needed to make a total of 0
-
-    # Iterate over each coin denomination
+    amount_so_far = 0
+    coins_used = 0
+    coins = sorted(coins, reverse=True)
     for coin in coins:
-        # Update min_coins[j] if it can be reduced by using the current coin
-        for j in range(coin, total + 1):
-            min_coins[j] = min(min_coins[j], min_coins[j - coin] + 1)
-
-    return min_coins[total] if min_coins[total] != float('inf') else -1
+        num_coins = (total - amount_so_far) // coin
+        amount_so_far += num_coins * coin
+        coins_used += num_coins
+        if amount_so_far == total:
+            return coins_used
+    return -1
