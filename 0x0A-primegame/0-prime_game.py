@@ -1,6 +1,17 @@
 #!/usr/bin/python3
+"""Functions for playing the prime game."""
+
 
 def is_prime(num):
+    """
+    Check if a number is prime.
+
+    Args:
+        num (int): The number to check.
+
+    Returns:
+        bool: True if the number is prime, False otherwise.
+    """
     if num < 2:
         return False
     for i in range(2, int(num ** 0.5) + 1):
@@ -10,6 +21,16 @@ def is_prime(num):
 
 
 def sieve_of_eratosthenes(limit):
+    """
+    Generate prime numbers up to a given limit using
+    the Sieve of Eratosthenes algorithm.
+
+    Args:
+        limit (int): The upper limit for generating prime numbers.
+
+    Returns:
+        list: A list of prime numbers up to the given limit.
+    """
     primes = []
     sieve = [True] * (limit + 1)
     for num in range(2, int(limit ** 0.5) + 1):
@@ -24,6 +45,16 @@ def sieve_of_eratosthenes(limit):
 
 
 def can_make_move(nums, prime):
+    """
+    Check if a player can make a move by removing multiples of a prime number.
+
+    Args:
+        nums (list): List of remaining numbers in the game.
+        prime (int): Prime number chosen by the player.
+
+    Returns:
+        bool: True if the player can make a move, False otherwise.
+    """
     for num in nums:
         if num % prime == 0:
             return True
@@ -31,6 +62,18 @@ def can_make_move(nums, prime):
 
 
 def isWinner(x, nums):
+    """
+    Determine the winner of multiple rounds of the prime game.
+
+    Args:
+        x (int): Number of rounds.
+        nums (list): List of integers representing the
+        upper limit for each round.
+
+    Returns:
+        str: Name of the player who won the most rounds ('Maria' or 'Ben').
+        If the winner cannot be determined, returns None.
+    """
     wins = {"Maria": 0, "Ben": 0}
 
     for n in nums:
